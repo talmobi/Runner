@@ -19,7 +19,8 @@ var sprLink, sprBg;
 
 var init = function() {
 	var manifest = [
-		{src:"gfx/link_sheet.png", id:"link"}
+		{src:"gfx/link_sheet.png", id:"link"},
+		{src:"gfx/city_backgrounds/city_background_sunset_small.png", id:"city_bg3"}
 	];
 
 	loader = new createjs.LoadQueue(false);
@@ -36,6 +37,13 @@ var init = function() {
 		var spriteSheet = new createjs.SpriteSheet(data);
 		sprLink = new createjs.Sprite(spriteSheet, "run");
 		sprLink.framerate = 30;
+
+		var img = loader.getResult("city_bg3");
+		sprBg = new createjs.Shape();
+		sprBg.graphics.beginBitmapFill(img).drawRect(0, 1, img.width, img.height);
+		sprBg.graphics.beginBitmapFill(img).drawRect(img.width - 1, 1, img.width, img.height);
+		sprBg.tileW = img.width * 2;
+		sprBg.tileHW = img.width;
 
 		main();
 	});
@@ -76,6 +84,20 @@ $("#container").append( stats.domElement );
 	*/
 var tick = function() {
 	stats.begin();
+
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+	sprBg.x--;
+
+	while (-sprBg.x > sprBg.tileW - width) {
+		sprBg.x += sprBg.tileHW;
+	}
 
 	stage.update();
 
