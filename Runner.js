@@ -3,17 +3,23 @@
 	*	@author @hannyajin
 	*/
 
+var width = 320;
+var height = width * 9 / 16;
+var GLOBAL = {
+	width: width,
+	height: height,
+	FPS: 30,
+}
 
 /**
 	*	Load assets
 	*/
-
+var stage, loader;
+var sprLink, sprBg;
 
 var init = function() {
-	var loader, sprLink;
 	var manifest = [
-		{src:"gfx/link_sheet.png", id:"link"},
-		{src:"gfx/city_backgrounds/city_background_sunset.png", id:"city_bg3"}
+		{src:"gfx/link_sheet.png", id:"link"}
 	];
 
 	loader = new createjs.LoadQueue(false);
@@ -33,7 +39,7 @@ var init = function() {
 
 		main();
 	});
-}
+};
 
 
 
@@ -45,7 +51,7 @@ var init = function() {
 var newRect = function(x,y,w,h,color) {
 	var shape = new createjs.Shape();
 	shape.snapToPixel = true;
-	shape.graphics.setStrokeStyle(1).beginStroke(color || "white").rect(0,0,w,h);
+	shape.graphics.setStrokeStyle(1).beginStroke(color || "white").rect(0, 0 , w, h);
 	shape.w = w;
 	shape.h = h;
 	shape.x = x;
@@ -76,13 +82,7 @@ var tick = function() {
 	stats.end();
 }
 
-var width = 320;
-var height = width * 9 / 16;
-var GLOBAL = {
-	width: width,
-	height: height,
-	FPS: 30,
-}
+
 
 /**
 	* Main
@@ -96,7 +96,7 @@ var main = function() {
 	canvas.width = width;
 	canvas.height = height;
 
-	var stage = new createjs.Stage(canvas);
+	stage = new createjs.Stage(canvas);
 
 	// pixel precise fix
 	stage.regX = .5;
@@ -106,10 +106,12 @@ var main = function() {
 	var border = newRect(1, 1, width - 1, height - 1);
 	stage.addChild(border);
 
+	// set background
+	stage.addChild(sprBg);
+
+	// add link
 	sprLink.setTransform(40,40,1,1);
-
 	stage.addChild(sprLink);
-
 	sprLink.play();
 
 	// ticker
